@@ -23,7 +23,9 @@ db.connect(err => {
 // Obtener todas las tareas
 app.get('/tareas', (req, res) => {
   db.query('SELECT * FROM tareas', (err, result) => {
-    if (err) throw err;
+    if (err) {
+        console.log("Error, No se obtuvieron las tareas" + err)
+    }
     res.send(result);
   });
 });
@@ -32,7 +34,9 @@ app.get('/tareas', (req, res) => {
 app.post('/tareas', (req, res) => {
   const { titulo } = req.body;
   db.query('INSERT INTO tareas (titulo) VALUES (?)', [titulo], (err, result) => {
-    if (err) throw err;
+    if (err) {
+        console.log("Error, No se agregó la tarea" + err)
+    }
     res.send(result);
   });
 });
@@ -41,7 +45,9 @@ app.post('/tareas', (req, res) => {
 app.delete('/tareas/:id', (req, res) => {
   const { id } = req.params;
   db.query('DELETE FROM tareas WHERE id = ?', [id], (err, result) => {
-    if (err) throw err;
+    if (err) {
+        console.log("Error, No se elimino la tarea" + err)
+    }
     res.send(result);
   });
 });
@@ -51,7 +57,9 @@ app.put('/tareas/:id', (req, res) => {
   const { id } = req.params;
   const { titulo } = req.body;
   db.query('UPDATE tareas SET titulo = ? WHERE id = ?', [titulo, id], (err, result) => {
-    if (err) throw err;
+    if (err) {
+        console.log("Error, No se actualizo la tarea" + err)
+    }
     res.send(result);
   });
 });
