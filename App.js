@@ -24,19 +24,47 @@ export default function App() {
   };
 
   // Agregar una nueva tarea
-  const agregarTarea = async () => {
-    try {
-      await fetch('http://localhost:3000/tareas', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ titulo }),
-      });
-      setTitulo('');
-      obtenerTareas();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+const agregarTarea = async () => {
+  // Validar que el título no esté vacío
+  if (titulo.trim() === '') {
+    alert('Por favor, ingrese un título para la tarea.');
+    return; // Salir de la función si el título es vacío
+  }
+
+  try {
+    await fetch('http://localhost:3000/tareas', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ titulo }),
+    });
+    setTitulo(''); // Limpiar el campo de entrada
+    obtenerTareas(); // Volver a cargar las tareas
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// Actualizar una tarea
+const actualizarTarea = async () => {
+  // Validar que el título no esté vacío
+  if (titulo.trim() === '') {
+    alert('Por favor, ingrese un título para la tarea.');
+    return; // Salir de la función si el título es vacío
+  }
+
+  try {
+    await fetch(`http://localhost:3000/tareas/${editarId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ titulo }),
+    });
+    setTitulo(''); // Limpiar el campo de entrada
+    setEditarId(null); // Resetear el estado de edición
+    obtenerTareas(); // Volver a cargar las tareas
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   // Eliminar una tarea
   const eliminarTarea = async (id) => {
@@ -52,22 +80,6 @@ export default function App() {
   const editarTarea = (tarea) => {
     setTitulo(tarea.titulo);
     setEditarId(tarea.id);
-  };
-
-  // Actualizar una tarea
-  const actualizarTarea = async () => {
-    try {
-      await fetch(`http://localhost:3000/tareas/${editarId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ titulo }),
-      });
-      setTitulo('');
-      setEditarId(null);
-      obtenerTareas();
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   return (
